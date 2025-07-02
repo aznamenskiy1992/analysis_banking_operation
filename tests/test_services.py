@@ -37,4 +37,4 @@ def test_none_search_str_for_filter_transaction_by_search_str(mock_get_data, get
 
     with pytest.raises(ValueError) as exc_info:
         filter_transaction_by_search_str(None)
-    assert str(exc_info.value) == "Строка для поиска не передана"
+    assert str(exc_info.value) == 'Строка для поиска не передана'

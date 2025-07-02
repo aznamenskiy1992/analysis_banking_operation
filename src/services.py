@@ -5,6 +5,9 @@ from src.data import get_data
 
 def filter_transaction_by_search_str(search_str: str) -> json:
     """Функция фильтрует DataFrame с операцими по строке"""
+    if search_str is None:
+        raise ValueError('Строка для поиска не передана')
+
     search_str_lower = search_str.lower()
 
     operations: pd.DataFrame = get_data()
