@@ -28,3 +28,13 @@ def test_transactions_not_found_for_filter_transaction_by_search_str(mock_get_da
     result = filter_transaction_by_search_str('.')
 
     assert json.loads(result) == []
+
+
+@patch('src.services.get_data')
+def test_none_search_str_for_filter_transaction_by_search_str(mock_get_data, get_data_for_services):
+    """Тестирует кейс, когда не передана строка поиска"""
+    mock_get_data.return_value = get_data_for_services
+
+    with pytest.raises(ValueError) as exc_info:
+        filter_transaction_by_search_str(None)
+    assert str(exc_info.value) == "Строка для поиска не передана"
