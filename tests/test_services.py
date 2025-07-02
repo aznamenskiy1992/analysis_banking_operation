@@ -38,3 +38,13 @@ def test_none_search_str_for_filter_transaction_by_search_str(mock_get_data, get
     with pytest.raises(ValueError) as exc_info:
         filter_transaction_by_search_str(None)
     assert str(exc_info.value) == 'Строка для поиска не передана'
+
+
+@patch('src.services.get_data')
+def test_search_is_not_str_for_filter_transaction_by_search_str(mock_get_data, get_data_for_services):
+    """Тестирует кейс, когда cтрока передана не в типе str"""
+    mock_get_data.return_value = get_data_for_services
+
+    with pytest.raises(TypeError) as exc_info:
+        filter_transaction_by_search_str(['МА'])
+    assert str(exc_info.value) == 'Строка передана не в типе str'
