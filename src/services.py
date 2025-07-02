@@ -7,6 +7,8 @@ def filter_transaction_by_search_str(search_str: str) -> json:
     """Функция фильтрует DataFrame с операцими по строке"""
     if search_str is None:
         raise ValueError('Строка для поиска не передана')
+    elif not isinstance(search_str, str):
+        raise TypeError('Строка передана не в типе str')
 
     search_str_lower = search_str.lower()
 
