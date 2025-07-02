@@ -24,6 +24,11 @@ def filter_transaction_by_search_str(operation: list[dict], search_str: str) -> 
         TypeError: Если search_str передана не в виде строки
     """
     # Проверка входных параметров
+    if operation is None:
+        raise ValueError("Транзакции не переданы")
+    elif not isinstance(operation, list):
+        raise TypeError("Транзакции должны быть переданы в списке")
+
     if search_str is None:
         raise ValueError("Строка для поиска не передана")
     elif not isinstance(search_str, str):
