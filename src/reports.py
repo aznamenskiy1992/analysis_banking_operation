@@ -9,6 +9,8 @@ def get_expenses_for_3_months_by_category(operation: pd.DataFrame, category: str
     """Функция возвращает траты по категории за последние 3 месяца"""
     if operation is None:
         raise ValueError('Транзакции не переданы')
+    elif not isinstance(operation, pd.DataFrame):
+        raise TypeError('Транзакции должны быть переданы в виде pandas DataFrame')
 
     if date is None:
         date = datetime.datetime.now()
