@@ -33,3 +33,10 @@ def test_none_operation_for_get_expenses_for_3_months_by_category():
     with pytest.raises(ValueError) as exc_info:
         get_expenses_for_3_months_by_category(None, 'Переводы', '2021-12-31')
     assert str(exc_info.value) == 'Транзакции не переданы'
+
+
+def test_operation_is_not_pd_df_for_get_expenses_for_3_months_by_category():
+    """Тестирует кейс, когда транзакции переданы не как pd.DataFrame"""
+    with pytest.raises(TypeError) as exc_info:
+        get_expenses_for_3_months_by_category([], 'Переводы', '2021-12-31')
+    assert str(exc_info.value) == 'Транзакции должны быть переданы в виде pandas DataFrame'
