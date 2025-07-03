@@ -26,3 +26,10 @@ def test_none_expenses_for_get_expenses_for_3_months_by_category(get_data_for_re
     result = get_expenses_for_3_months_by_category(get_data_for_reports, 'Переводы', '2021-12-31')
 
     assert json.loads(result) == []
+
+
+def test_none_operation_for_get_expenses_for_3_months_by_category():
+    """Тестирует кейс, когда транзакции не переданы"""
+    with pytest.raises(ValueError) as exc_info:
+        get_expenses_for_3_months_by_category(None, 'Переводы', '2021-12-31')
+    assert str(exc_info.value) == "Транзакции не переданы"
