@@ -54,3 +54,10 @@ def test_category_is_not_str_for_get_expenses_for_3_months_by_category(get_data_
     with pytest.raises(TypeError) as exc_info:
         get_expenses_for_3_months_by_category(get_data_for_reports, [], '2021-12-31')
     assert str(exc_info.value) == 'Категория должна быть передана в виде str'
+
+
+def test_date_not_convert_to_datetime_for_get_expenses_for_3_months_by_category(get_data_for_reports):
+    """Тестирует кейс, когда дата не конвертируется в datetime"""
+    with pytest.raises(ValueError) as exc_info:
+        get_expenses_for_3_months_by_category(get_data_for_reports, 'Переводы', '31.12.2025')
+    assert str(exc_info.value) == 'Дата указана неверно. Маска: YYYY-MM-DD'
