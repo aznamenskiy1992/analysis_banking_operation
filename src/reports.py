@@ -20,18 +20,17 @@ def get_expenses_for_3_months_by_category(operation: pd.DataFrame, category: str
     if date is None:
         date = datetime.datetime.now()
 
-    date_obj = datetime.datetime.strptime(date, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
-    print(date_obj)
+    try:
+        date_obj = datetime.datetime.strptime(date, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
+    except ValueError:
+        raise ValueError('Дата указана неверно. Маска: YYYY-MM-DD')
 
     if not pd.api.types.is_datetime64_dtype(operation['Дата операции']):
         operation['Дата операции'] = pd.to_datetime(operation['Дата операции'], dayfirst=True)
-        print(operation['Дата операции'].dtype)
 
     normalize_category: str = category.strip().capitalize()
-    print(normalize_category)
 
     start_date = date_obj - datetime.timedelta(days=90)
-    print(start_date)
 
     filtered_operation = operation.loc[
         (operation['Дата операции'].notnull()) &
@@ -40,7 +39,6 @@ def get_expenses_for_3_months_by_category(operation: pd.DataFrame, category: str
         (operation['Дата операции'] >= start_date) &
         (operation['Дата операции'] <= date_obj)
     ]
-    print(filtered_operation.head())
 
     if len(filtered_operation) != 0:
         grouped_operation = filtered_operation.groupby('Категория')['Сумма операции с округлением'].sum().reset_index()
