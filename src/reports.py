@@ -18,12 +18,12 @@ def get_expenses_for_3_months_by_category(operation: pd.DataFrame, category: str
         raise TypeError('Категория должна быть передана в виде str')
 
     if date is None:
-        date = datetime.datetime.now()
-
-    try:
-        date_obj = datetime.datetime.strptime(date, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
-    except ValueError:
-        raise ValueError('Дата указана неверно. Маска: YYYY-MM-DD')
+        date_obj = datetime.datetime.now()
+    else:
+        try:
+            date_obj = datetime.datetime.strptime(date, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
+        except ValueError:
+            raise ValueError('Дата указана неверно. Маска: YYYY-MM-DD')
 
     if not pd.api.types.is_datetime64_dtype(operation['Дата операции']):
         operation['Дата операции'] = pd.to_datetime(operation['Дата операции'], dayfirst=True)

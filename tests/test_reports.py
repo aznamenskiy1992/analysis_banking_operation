@@ -61,3 +61,18 @@ def test_date_not_convert_to_datetime_for_get_expenses_for_3_months_by_category(
     with pytest.raises(ValueError) as exc_info:
         get_expenses_for_3_months_by_category(get_data_for_reports, 'Переводы', '31.12.2025')
     assert str(exc_info.value) == 'Дата указана неверно. Маска: YYYY-MM-DD'
+
+
+@patch('src.reports.datetime.datetime', wraps=datetime.datetime)
+def test_date_is_none_for_get_expenses_for_3_months_by_category(mock_datetime, get_now_data_for_reports):
+    """Тестирует кейс, когда дата не передана"""
+    mock_datetime.now.return_value = get_now_data_for_reports[0]
+
+    result = get_expenses_for_3_months_by_category(get_now_data_for_reports[-1], 'Супермаркеты')
+
+    assert json.loads(result) == [
+        {
+            "Категория": "Супермаркеты",
+            "Сумма операции с округлением": 160.89,
+        },
+    ]
