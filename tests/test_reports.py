@@ -53,4 +53,4 @@ def test_category_is_not_str_for_get_expenses_for_3_months_by_category(get_data_
     """Тестирует кейс, когда категория передана не в str"""
     with pytest.raises(TypeError) as exc_info:
         get_expenses_for_3_months_by_category(get_data_for_reports, [], '2021-12-31')
-    assert str(exc_info.value) == 'категория должна быть передана в виде str'
+    assert str(exc_info.value) == 'Категория должна быть передана в виде str'

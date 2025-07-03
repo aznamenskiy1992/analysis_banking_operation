@@ -14,6 +14,8 @@ def get_expenses_for_3_months_by_category(operation: pd.DataFrame, category: str
 
     if category is None:
         raise ValueError('Категория не передана')
+    elif not isinstance(category, str):
+        raise TypeError('Категория должна быть передана в виде str')
 
     if date is None:
         date = datetime.datetime.now()
