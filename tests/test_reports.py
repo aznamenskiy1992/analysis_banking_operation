@@ -18,3 +18,11 @@ def test_get_expenses_for_get_expenses_for_3_months_by_category(get_data_for_rep
             "Сумма операции с округлением": 321.78,
         },
     ]
+
+
+def test_none_expenses_for_get_expenses_for_3_months_by_category(get_data_for_reports):
+    """Тестирует кейс, когда по категории не было трат"""
+
+    result = get_expenses_for_3_months_by_category(get_data_for_reports, 'Переводы', '2021-12-31')
+
+    assert json.loads(result) == []
