@@ -32,4 +32,4 @@ def test_none_operation_for_get_expenses_for_3_months_by_category():
     """Тестирует кейс, когда транзакции не переданы"""
     with pytest.raises(ValueError) as exc_info:
         get_expenses_for_3_months_by_category(None, 'Переводы', '2021-12-31')
-    assert str(exc_info.value) == "Транзакции не переданы"
+    assert str(exc_info.value) == 'Транзакции не переданы'
