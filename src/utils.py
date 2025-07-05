@@ -22,33 +22,39 @@ def get_expenses(operation: pd.DataFrame) -> dict:
     total_amount: int = round(expenses['amount'].sum())
 
     # Считаем расходы по категориям
-    grouped_expenses: pd.DataFrame = (
-        expenses.groupby(['category'])['amount']
-        .sum()
-        .round()
-        .sort_values(ascending=False)
-        .reset_index()
-    )
-    expenses_by_categories: list[dict] = grouped_expenses.iloc[:7].to_dict(orient='records')
-    if len(expenses_by_categories) == 7:
-        expenses_in_other_category: int = grouped_expenses.iloc[7:]['amount'].sum()
-        if expenses_in_other_category > 0:
-            expenses_by_categories.append(
-                {
-                    "category": "Остальное",
-                    "amount": expenses_in_other_category
-                }
-            )
+    if len(expenses) == 0:
+        expenses_by_categories: list = []
+    else:
+        grouped_expenses: pd.DataFrame = (
+            expenses.groupby(['category'])['amount']
+            .sum()
+            .round()
+            .sort_values(ascending=False)
+            .reset_index()
+        )
+        expenses_by_categories: list[dict] = grouped_expenses.iloc[:7].to_dict(orient='records')
+        if len(expenses_by_categories) == 7:
+            expenses_in_other_category: int = grouped_expenses.iloc[7:]['amount'].sum()
+            if expenses_in_other_category > 0:
+                expenses_by_categories.append(
+                    {
+                        "category": "Остальное",
+                        "amount": expenses_in_other_category
+                    }
+                )
 
     # Считаем сумму по переводам и наличным
-    grouped_cash_and_transfers: pd.DataFrame = (
-        cash_and_transfers.groupby(['category'])['amount']
-        .sum()
-        .round()
-        .sort_values(ascending=False)
-        .reset_index()
-    )
-    result_cash_and_transfers: list[dict] = grouped_cash_and_transfers.to_dict(orient='records')
+    if len(cash_and_transfers) == 0:
+        result_cash_and_transfers: list = []
+    else:
+        grouped_cash_and_transfers: pd.DataFrame = (
+            cash_and_transfers.groupby(['category'])['amount']
+            .sum()
+            .round()
+            .sort_values(ascending=False)
+            .reset_index()
+        )
+        result_cash_and_transfers: list[dict] = grouped_cash_and_transfers.to_dict(orient='records')
 
     return {
         "expenses": {
