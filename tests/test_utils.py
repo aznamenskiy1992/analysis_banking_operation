@@ -155,3 +155,51 @@ def test_not_have_transfers_category_for_get_expenses(get_data_for_get_expenses)
             ],
         }
     }
+
+
+def test_not_have_cash_and_transfers_categories_for_get_expenses(get_data_for_get_expenses):
+    """Тестирует кейс, когда нет категорий наличные и переводы"""
+    result = get_expenses(
+        get_data_for_get_expenses[:-4]
+    )
+
+    assert result == {
+        "expenses": {
+            "total_amount": 5363,
+            "main": [
+                {
+                    "category": "Дом и ремонт",
+                    "amount": 3250
+                },
+                {
+                    "category": "Супермаркеты",
+                    "amount": 681
+                },
+                {
+                    "category": "Ж/д билеты",
+                    "amount": 330
+                },
+                {
+                    "category": "Фастфуд",
+                    "amount": 296
+                },
+                {
+                    "category": "Связь",
+                    "amount": 225
+                },
+                {
+                    "category": "Каршеринг",
+                    "amount": 170
+                },
+                {
+                    "category": "Различные товары",
+                    "amount": 150
+                },
+                {
+                    "category": "Остальное",
+                    "amount": 260
+                },
+            ],
+            "transfers_and_cash": [],
+        }
+    }
