@@ -6,9 +6,7 @@ from src.utils import get_expenses
 def test_get_expenses_for_get_expenses(get_data_for_get_expenses):
     """Тестирует возврат расходов"""
     result = get_expenses(
-        get_data_for_get_expenses['operations'],
-        get_data_for_get_expenses['start_date'],
-        get_data_for_get_expenses['end_date'],
+        get_data_for_get_expenses
     )
 
     assert result == {
