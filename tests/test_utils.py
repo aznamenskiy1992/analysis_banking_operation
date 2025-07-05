@@ -82,3 +82,36 @@ def test_not_have_expenses_for_get_expenses(get_data_for_get_expenses):
             ],
         }
     }
+
+
+def test_less_7_categories_for_get_expenses(get_data_for_get_expenses):
+    """Тестирует кейс, когда меньше 7 категорий"""
+    result = get_expenses(
+        get_data_for_get_expenses[-6:]
+    )
+
+    assert result == {
+        "expenses": {
+            "total_amount": 345,
+            "main": [
+                {
+                    "category": "Связь",
+                    "amount": 225
+                },
+                {
+                    "category": "Цветы",
+                    "amount": 120
+                },
+            ],
+            "transfers_and_cash": [
+                {
+                    "category": "Наличные",
+                    "amount": 8000
+                },
+                {
+                    "category": "Переводы",
+                    "amount": 3250
+                },
+            ],
+        }
+    }
