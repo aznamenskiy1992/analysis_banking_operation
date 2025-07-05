@@ -58,3 +58,27 @@ def test_get_expenses_for_get_expenses(get_data_for_get_expenses):
             ],
         }
     }
+
+
+def test_not_have_expenses_for_get_expenses(get_data_for_get_expenses):
+    """Тестирует кейс, когда нет расходов"""
+    result = get_expenses(
+        get_data_for_get_expenses[-4:]
+    )
+
+    assert result == {
+        "expenses": {
+            "total_amount": 0,
+            "main": [],
+            "transfers_and_cash": [
+                {
+                    "category": "Наличные",
+                    "amount": 8000
+                },
+                {
+                    "category": "Переводы",
+                    "amount": 3250
+                },
+            ],
+        }
+    }
