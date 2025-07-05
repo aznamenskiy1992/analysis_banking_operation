@@ -30,12 +30,14 @@ def get_expenses(operation: pd.DataFrame) -> dict:
         .reset_index()
     )
     expenses_by_categories: list[dict] = grouped_expenses.iloc[:7].to_dict(orient='records')
-    expenses_by_categories.append(
-        {
-            "category": "Остальное",
-            "amount": grouped_expenses.iloc[7:]['amount'].sum()
-        }
-    )
+    expenses_in_other_category: int = grouped_expenses.iloc[7:]['amount'].sum()
+    if expenses_in_other_category > 0:
+        expenses_by_categories.append(
+            {
+                "category": "Остальное",
+                "amount": expenses_in_other_category
+            }
+        )
 
     # Считаем сумму по переводам и наличным
     grouped_cash_and_transfers: pd.DataFrame = (
