@@ -13,13 +13,20 @@ def get_expenses(operation: pd.DataFrame) -> dict:
         'Сумма операции с округлением': 'amount',
     })
 
+    cash_and_transfers_categories: list = ['Переводы', 'Наличные']
+
+    # Находим категории расходов
+    expenses_categories: list = operation.loc[
+        (operation['Сумма операции'] < 0) &
+        (~operation['category'].isin(cash_and_transfers_categories))
+    ]['category'].to_list()
+
     # Создаём DataFrame с расходами и с переводами и наличными
-    cash_and_transfers_categories: list = ['Наличные', 'Переводы', 'Пополнения']
-    expenses: pd.DataFrame = operation.loc[~operation['category'].isin(cash_and_transfers_categories)]
-    cash_and_transfers: pd.DataFrame = operation.loc[operation['category'].isin(cash_and_transfers_categories[:2])]
+    expenses: pd.DataFrame = operation.loc[operation['category'].isin(expenses_categories)]
+    cash_and_transfers: pd.DataFrame = operation.loc[operation['category'].isin(cash_and_transfers_categories)]
 
     # Считаем общую сумму расходов
-    total_amount: int = round(expenses['amount'].sum())
+    total_amount: int = round(expenses['amount'].sum()) + round(cash_and_transfers['amount'].sum())
 
     # Считаем расходы по категориям
     if len(expenses) == 0:

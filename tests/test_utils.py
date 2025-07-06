@@ -11,7 +11,7 @@ def test_get_expenses_for_get_expenses(get_data_for_get_expenses):
 
     assert result == {
         "expenses": {
-            "total_amount": 5363,
+            "total_amount": 16613,
             "main": [
                 {
                     "category": "Дом и ремонт",
@@ -68,7 +68,7 @@ def test_not_have_expenses_for_get_expenses(get_data_for_get_expenses):
 
     assert result == {
         "expenses": {
-            "total_amount": 0,
+            "total_amount": 11250,
             "main": [],
             "transfers_and_cash": [
                 {
@@ -92,7 +92,7 @@ def test_less_7_categories_for_get_expenses(get_data_for_get_expenses):
 
     assert result == {
         "expenses": {
-            "total_amount": 345,
+            "total_amount": 11595,
             "main": [
                 {
                     "category": "Связь",
@@ -125,7 +125,7 @@ def test_not_have_cash_category_for_get_expenses(get_data_for_get_expenses):
 
     assert result == {
         "expenses": {
-            "total_amount": 0,
+            "total_amount": 3250,
             "main": [],
             "transfers_and_cash": [
                 {
@@ -145,7 +145,7 @@ def test_not_have_transfers_category_for_get_expenses(get_data_for_get_expenses)
 
     assert result == {
         "expenses": {
-            "total_amount": 0,
+            "total_amount": 8000,
             "main": [],
             "transfers_and_cash": [
                 {
