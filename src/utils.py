@@ -79,14 +79,17 @@ def get_income(operation: pd.DataFrame) -> dict:
     total_amount: int = round(income['amount'].sum())
 
     # Считаем поступления по категориям
-    grouped_income: pd.DataFrame = (
-        income.groupby(['category'])['amount']
-        .sum()
-        .round()
-        .sort_values(ascending=False)
-        .reset_index()
-    )
-    income_by_categories: list[dict] = grouped_income.to_dict(orient='records')
+    if len(income) == 0:
+        income_by_categories: list = []
+    else:
+        grouped_income: pd.DataFrame = (
+            income.groupby(['category'])['amount']
+            .sum()
+            .round()
+            .sort_values(ascending=False)
+            .reset_index()
+        )
+        income_by_categories: list[dict] = grouped_income.to_dict(orient='records')
 
     return {
         "income": {
