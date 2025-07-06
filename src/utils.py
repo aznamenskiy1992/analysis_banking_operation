@@ -14,9 +14,9 @@ def get_expenses(operation: pd.DataFrame) -> dict:
     })
 
     # Создаём DataFrame с расходами и с переводами и наличными
-    cash_and_transfers_categories: list = ['Наличные', 'Переводы']
+    cash_and_transfers_categories: list = ['Наличные', 'Переводы', 'Пополнения']
     expenses: pd.DataFrame = operation.loc[~operation['category'].isin(cash_and_transfers_categories)]
-    cash_and_transfers: pd.DataFrame = operation.loc[operation['category'].isin(cash_and_transfers_categories)]
+    cash_and_transfers: pd.DataFrame = operation.loc[operation['category'].isin(cash_and_transfers_categories[:2])]
 
     # Считаем общую сумму расходов
     total_amount: int = round(expenses['amount'].sum())
