@@ -206,7 +206,7 @@ def test_not_have_cash_and_transfers_categories_for_get_expenses(get_data_for_ge
 
 
 def test_get_income_for_get_income(get_data_for_get_income):
-    """Тестирует кейс по возврату общей суммы поступлений"""
+    """Тестирует кейс по возврату поступлений"""
     result = get_income(get_data_for_get_income)
 
     assert result == {

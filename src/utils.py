@@ -66,4 +66,31 @@ def get_expenses(operation: pd.DataFrame) -> dict:
 
 
 def get_income(operation: pd.DataFrame) -> dict:
-    pass
+    """Функция возвращает поступления"""
+    operation = operation.rename(columns={
+        'Описание': 'category',
+        'Сумма операции с округлением': 'amount',
+    })
+
+    # Создаём DataFrame с поступлениями
+    income: pd.DataFrame = operation.loc[operation['Категория'] == 'Пополнения']
+
+    # Считаем общую сумму поступлений
+    total_amount: int = round(income['amount'].sum())
+
+    # Считаем поступления по категориям
+    grouped_income: pd.DataFrame = (
+        income.groupby(['category'])['amount']
+        .sum()
+        .round()
+        .sort_values(ascending=False)
+        .reset_index()
+    )
+    income_by_categories: list[dict] = grouped_income.to_dict(orient='records')
+
+    return {
+        "income": {
+            "total_amount": total_amount,
+            "main": income_by_categories,
+        }
+    }
