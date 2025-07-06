@@ -63,3 +63,7 @@ def get_expenses(operation: pd.DataFrame) -> dict:
             "transfers_and_cash": result_cash_and_transfers
         }
     }
+
+
+def get_income(operation: pd.DataFrame) -> dict:
+    pass

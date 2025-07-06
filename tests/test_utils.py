@@ -1,6 +1,6 @@
 import pytest
 
-from src.utils import get_expenses
+from src.utils import get_expenses, get_income
 
 
 def test_get_expenses_for_get_expenses(get_data_for_get_expenses):
@@ -201,5 +201,26 @@ def test_not_have_cash_and_transfers_categories_for_get_expenses(get_data_for_ge
                 },
             ],
             "transfers_and_cash": [],
+        }
+    }
+
+
+def test_get_income_for_get_income(get_data_for_get_income):
+    """Тестирует кейс по возврату общей суммы поступлений"""
+    result = get_income(get_data_for_get_income)
+
+    assert result == {
+        "income": {
+            "total_amount": 9200,
+            "main": [
+                {
+                    "category": "Пополнение через Газпромбанк",
+                    "amount": 8000
+                },
+                {
+                    "category": "Пополнение через Сбер",
+                    "amount": 1200
+                },
+            ]
         }
     }
