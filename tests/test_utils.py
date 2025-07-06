@@ -224,3 +224,15 @@ def test_get_income_for_get_income(get_data_for_get_income):
             ]
         }
     }
+
+
+def test_not_have_income_for_get_income(get_data_for_get_expenses):
+    """Тестирует кейс, когда нет поступлений"""
+    result = get_income(get_data_for_get_expenses)
+
+    assert result == {
+        "income": {
+            "total_amount": 0,
+            "main": []
+        }
+    }
