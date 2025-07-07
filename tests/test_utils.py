@@ -342,3 +342,17 @@ def test_get_stock_prices_for_get_stock_prices(mock_get, get_data_for_get_stock_
     }
 
     mock_get.assert_called_once()
+
+
+@pytest.mark.parametrize(
+    'input_stocks, raise_message',
+    [
+        ([], 'Список акций пустой'),
+        (None, 'Акции не переданы',)
+    ]
+)
+def test_incorrect_input_currencies_for_get_stock_prices(input_stocks, raise_message):
+    """Тестирует кейсы, когда акции не переданы или переданы некорректно"""
+    with pytest.raises(ValueError) as exc_info:
+        get_stock_prices(input_stocks)
+    assert str(exc_info.value) == raise_message
