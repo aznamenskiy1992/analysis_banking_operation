@@ -60,8 +60,8 @@ def test_get_expenses_for_get_expenses(get_data_for_get_expenses):
                 {
                     "category": "Переводы",
                     "amount": 3250
-                },
-            ],
+                }
+            ]
         }
     }
 
@@ -84,8 +84,8 @@ def test_not_have_expenses_for_get_expenses(get_data_for_get_expenses):
                 {
                     "category": "Переводы",
                     "amount": 3250
-                },
-            ],
+                }
+            ]
         }
     }
 
@@ -107,7 +107,7 @@ def test_less_7_categories_for_get_expenses(get_data_for_get_expenses):
                 {
                     "category": "Цветы",
                     "amount": 120
-                },
+                }
             ],
             "transfers_and_cash": [
                 {
@@ -117,8 +117,8 @@ def test_less_7_categories_for_get_expenses(get_data_for_get_expenses):
                 {
                     "category": "Переводы",
                     "amount": 3250
-                },
-            ],
+                }
+            ]
         }
     }
 
@@ -137,8 +137,8 @@ def test_not_have_cash_category_for_get_expenses(get_data_for_get_expenses):
                 {
                     "category": "Переводы",
                     "amount": 3250
-                },
-            ],
+                }
+            ]
         }
     }
 
@@ -157,8 +157,8 @@ def test_not_have_transfers_category_for_get_expenses(get_data_for_get_expenses)
                 {
                     "category": "Наличные",
                     "amount": 8000
-                },
-            ],
+                }
+            ]
         }
     }
 
@@ -204,9 +204,9 @@ def test_not_have_cash_and_transfers_categories_for_get_expenses(get_data_for_ge
                 {
                     "category": "Остальное",
                     "amount": 260
-                },
+                }
             ],
-            "transfers_and_cash": [],
+            "transfers_and_cash": []
         }
     }
 
@@ -226,7 +226,7 @@ def test_get_income_for_get_income(get_data_for_get_income):
                 {
                     "category": "Пополнение через Сбер",
                     "amount": 1200
-                },
+                }
             ]
         }
     }
@@ -339,7 +339,7 @@ def test_get_stock_prices_for_get_stock_prices(mock_get, get_data_for_get_stock_
             {
                 "stock": "AMZN",
                 "price": 320.55
-            },
+            }
         ]
     }
 

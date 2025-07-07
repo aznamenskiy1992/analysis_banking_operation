@@ -116,7 +116,7 @@ def get_income(operation: pd.DataFrame) -> str:
         {
             "income": {
                 "total_amount": total_amount,
-                "main": income_by_categories,
+                "main": income_by_categories
             }
         }, indent=4
     )
