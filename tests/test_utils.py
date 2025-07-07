@@ -351,8 +351,15 @@ def test_get_stock_prices_for_get_stock_prices(mock_get, get_data_for_get_stock_
         (None, 'Акции не переданы',)
     ]
 )
-def test_incorrect_input_currencies_for_get_stock_prices(input_stocks, raise_message):
+def test_incorrect_input_stocks_for_get_stock_prices(input_stocks, raise_message):
     """Тестирует кейсы, когда акции не переданы или переданы некорректно"""
     with pytest.raises(ValueError) as exc_info:
         get_stock_prices(input_stocks)
     assert str(exc_info.value) == raise_message
+
+
+def test_stocks_is_not_list_for_get_stock_prices():
+    """Тестирует кейс, когда акции переданы не в списке"""
+    with pytest.raises(TypeError) as exc_info:
+        get_stock_prices({'AMZN',})
+    assert str(exc_info.value) == 'Акции переданы не в списке'
