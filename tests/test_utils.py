@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 from unittest.mock import patch, MagicMock
@@ -13,7 +15,7 @@ def test_get_expenses_for_get_expenses(get_data_for_get_expenses):
         get_data_for_get_expenses
     )
 
-    assert result == {
+    assert json.loads(result) == {
         "expenses": {
             "total_amount": 16613,
             "main": [
@@ -70,7 +72,7 @@ def test_not_have_expenses_for_get_expenses(get_data_for_get_expenses):
         get_data_for_get_expenses[-4:]
     )
 
-    assert result == {
+    assert json.loads(result) == {
         "expenses": {
             "total_amount": 11250,
             "main": [],
@@ -94,7 +96,7 @@ def test_less_7_categories_for_get_expenses(get_data_for_get_expenses):
         get_data_for_get_expenses[-6:]
     )
 
-    assert result == {
+    assert json.loads(result) == {
         "expenses": {
             "total_amount": 11595,
             "main": [
@@ -127,7 +129,7 @@ def test_not_have_cash_category_for_get_expenses(get_data_for_get_expenses):
         get_data_for_get_expenses[-2:]
     )
 
-    assert result == {
+    assert json.loads(result) == {
         "expenses": {
             "total_amount": 3250,
             "main": [],
@@ -147,7 +149,7 @@ def test_not_have_transfers_category_for_get_expenses(get_data_for_get_expenses)
         get_data_for_get_expenses[-4:-2]
     )
 
-    assert result == {
+    assert json.loads(result) == {
         "expenses": {
             "total_amount": 8000,
             "main": [],
@@ -167,7 +169,7 @@ def test_not_have_cash_and_transfers_categories_for_get_expenses(get_data_for_ge
         get_data_for_get_expenses[:-4]
     )
 
-    assert result == {
+    assert json.loads(result) == {
         "expenses": {
             "total_amount": 5363,
             "main": [
@@ -213,7 +215,7 @@ def test_get_income_for_get_income(get_data_for_get_income):
     """Тестирует кейс по возврату поступлений"""
     result = get_income(get_data_for_get_income)
 
-    assert result == {
+    assert json.loads(result) == {
         "income": {
             "total_amount": 9200,
             "main": [
@@ -234,7 +236,7 @@ def test_not_have_income_for_get_income(get_data_for_get_expenses):
     """Тестирует кейс, когда нет поступлений"""
     result = get_income(get_data_for_get_expenses)
 
-    assert result == {
+    assert json.loads(result) == {
         "income": {
             "total_amount": 0,
             "main": []
@@ -252,7 +254,7 @@ def test_get_currency_rate_for_get_currency_rates(mock_get, get_currency_respons
 
     result = get_currency_rates(['USD', 'EUR'])
 
-    assert result == {
+    assert json.loads(result) == {
         "currency_rates": [
             {
                 "currency": "USD",
@@ -328,7 +330,7 @@ def test_get_stock_prices_for_get_stock_prices(mock_get, get_data_for_get_stock_
 
     result = get_stock_prices(['AAPL', 'AMZN'])
 
-    assert result == {
+    assert json.loads(result) == {
         "stock_prices": [
             {
                 "stock": "AAPL",

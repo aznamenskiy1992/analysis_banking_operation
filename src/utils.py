@@ -1,4 +1,5 @@
 import os
+import json
 
 import pandas as pd
 import requests
@@ -12,7 +13,7 @@ currency_data_api_key = os.getenv('CURRENCY_DATA_API_KEY')
 marketstack_api_key = os.getenv('MARKETSTACK_API_KEY')
 
 
-def get_expenses(operation: pd.DataFrame) -> dict:
+def get_expenses(operation: pd.DataFrame) -> str:
     """
     Функция возвращает:
     1. Общую сумму расходов
@@ -74,16 +75,18 @@ def get_expenses(operation: pd.DataFrame) -> dict:
         )
         result_cash_and_transfers: list[dict] = grouped_cash_and_transfers.to_dict(orient='records')
 
-    return {
-        "expenses": {
-            "total_amount": total_amount,
-            "main": expenses_by_categories,
-            "transfers_and_cash": result_cash_and_transfers
-        }
-    }
+    return json.dumps(
+        {
+            "expenses": {
+                "total_amount": total_amount,
+                "main": expenses_by_categories,
+                "transfers_and_cash": result_cash_and_transfers
+            }
+        }, indent=4
+    )
 
 
-def get_income(operation: pd.DataFrame) -> dict:
+def get_income(operation: pd.DataFrame) -> str:
     """Функция возвращает поступления"""
     operation = operation.rename(columns={
         'Описание': 'category',
@@ -109,15 +112,17 @@ def get_income(operation: pd.DataFrame) -> dict:
         )
         income_by_categories: list[dict] = grouped_income.to_dict(orient='records')
 
-    return {
-        "income": {
-            "total_amount": total_amount,
-            "main": income_by_categories,
-        }
-    }
+    return json.dumps(
+        {
+            "income": {
+                "total_amount": total_amount,
+                "main": income_by_categories,
+            }
+        }, indent=4
+    )
 
 
-def get_currency_rates(currencies: list) -> dict:
+def get_currency_rates(currencies: list) -> str:
     """Функция возвращает курс валют из user_settings.json"""
     if currencies is None:
         raise ValueError('Валюты не переданы')
@@ -160,12 +165,14 @@ def get_currency_rates(currencies: list) -> dict:
                 }
             )
 
-    return {
+    return json.dumps(
+        {
         "currency_rates": currency_rates
-    }
+        }, indent=4
+    )
 
 
-def get_stock_prices(stocks: list) -> dict:
+def get_stock_prices(stocks: list) -> str:
     """Функция возвращает стоимость акций из user_settings.json"""
     if stocks is None:
         raise ValueError('Акции не переданы')
@@ -202,6 +209,8 @@ def get_stock_prices(stocks: list) -> dict:
 
         stock_prices.extend([{"stock": content['data'][i]['symbol'], "price": content['data'][i]['close']} for i in range(len(content['data'])) if 'symbol' in content['data'][i] and 'close' in content['data'][i]])
 
-    return {
+    return json.dumps(
+        {
         "stock_prices": stock_prices
-    }
+        }, indent=4
+    )
