@@ -244,7 +244,6 @@ def test_not_have_income_for_get_income(get_data_for_get_expenses):
 @patch('requests.get')
 def test_get_currency_rate_for_get_currency_rates(mock_get, get_currency_response_for_get_currency_rates):
     """Тестирует возврат курсов валют"""
-    # Настраиваем mock
     mock_response = MagicMock()
     mock_response.status_code = 200
     mock_response.json.side_effect = get_currency_response_for_get_currency_rates
@@ -267,3 +266,18 @@ def test_get_currency_rate_for_get_currency_rates(mock_get, get_currency_respons
 
     assert  mock_get.call_count == 2
 
+
+@pytest.mark.parametrize(
+    'input_currencies, raise_message',
+    [
+        (
+            [], 'Список валют пустой',
+            None, 'Валюты не переданы',
+        )
+    ]
+)
+def test_incorrect_input_currencies_for_get_currency_rates(input_currencies, raise_message):
+    """Тестирует кейсы, когда валюты не переданы или переданы некорректно"""
+    with pytest.raises(ValueError) as exc_info:
+        get_currency_rates(input_currencies)
+    assert str(exc_info.value) == raise_message
