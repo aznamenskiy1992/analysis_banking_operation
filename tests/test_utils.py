@@ -1,6 +1,9 @@
 import pytest
 
-from src.utils import get_expenses, get_income
+from unittest.mock import patch, MagicMock
+
+from example_api_requests_and_response import result
+from src.utils import get_expenses, get_income, get_currency_rates
 
 
 def test_get_expenses_for_get_expenses(get_data_for_get_expenses):
@@ -236,3 +239,29 @@ def test_not_have_income_for_get_income(get_data_for_get_expenses):
             "main": []
         }
     }
+
+
+@patch('requests.get')
+def test_get_currency_rate_for_get_currency_rates(mock_get, get_currency_response_for_get_currency_rates):
+    """Тестирует возврат курсов валют"""
+    # Настраиваем mock
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.json.side_effect = get_currency_response_for_get_currency_rates
+    mock_get.return_value = mock_response
+
+    result = get_currency_rates(['USD', 'EUR'])
+
+    assert result == {
+        "currency_rates": [
+            {
+                "currency": "USD",
+                "rate": 78.918179
+            },
+            {
+                "currency": "EUR",
+                "rate": 93.01
+            }
+        ]
+    }
+

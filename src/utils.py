@@ -1,6 +1,8 @@
 import os
 
 import pandas as pd
+import requests
+import datetime
 
 from dotenv import load_dotenv
 
@@ -118,6 +120,3 @@ def get_income(operation: pd.DataFrame) -> dict:
 def get_currency_rates(currency: list) -> dict:
     """Функция возвращает курс валют из user_settings.json"""
     pass
-
-
-

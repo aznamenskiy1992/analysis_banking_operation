@@ -348,3 +348,40 @@ def get_data_for_get_income():
             },
         ]
     )
+
+
+@pytest.fixture
+def get_currency_response_for_get_currency_rates():
+    """Фикстура возвращает ответ от currency_data-api"""
+    return [
+        {
+            'success': True,
+            'change': True,
+            'start_date': '2025-07-07',
+            'end_date': '2025-07-07',
+            'source': 'USD',
+            'quotes': {
+                'USDRUB': {
+                    'start_rate': 78.918179,
+                    'end_rate': 78.918179,
+                    'change': 0,
+                    'change_pct': 0
+                }
+            }
+        },
+        {
+            'success': True,
+            'change': True,
+            'start_date': '2025-07-07',
+            'end_date': '2025-07-07',
+            'source': 'EUR',
+            'quotes': {
+                'EURRUB': {
+                    'start_rate': 93.01,
+                    'end_rate': 93.01,
+                    'change': 0,
+                    'change_pct': 0
+                }
+            }
+        },
+    ]
