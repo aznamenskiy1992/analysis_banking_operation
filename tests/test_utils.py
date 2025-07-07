@@ -363,3 +363,18 @@ def test_stocks_is_not_list_for_get_stock_prices():
     with pytest.raises(TypeError) as exc_info:
         get_stock_prices({'AMZN',})
     assert str(exc_info.value) == 'Акции переданы не в списке'
+
+
+@patch('requests.get')
+def test_http_error_for_get_stock_prices(mock_get):
+    """Тестирует HTTP ошибки при get запросе"""
+    mock_response = MagicMock()
+    mock_response.status_code = 404
+    mock_response.raise_for_status.side_effect = requests.HTTPError("404 Client Error")
+    mock_get.return_value = mock_response
+
+    with pytest.raises(requests.HTTPError) as exc_info:
+        get_stock_prices(['АМЗН'])
+    assert 'Ошибка HTTP:' in str(exc_info.value)
+
+    assert mock_get.call_count == 1
