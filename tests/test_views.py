@@ -71,3 +71,18 @@ def test_get_result_inner_function_for_get_events(mock_get_expenses, mock_get_in
             }
         ]
     }
+
+
+@pytest.mark.parametrize(
+    'date_, raise_message',
+    [
+        (None, 'Дата не передана'),
+        (['2025-07-07', 'Дата должна быть передана, как строка'])
+    ]
+)
+def test_incorrect_date_for_get_events(date_, raise_message):
+    """Тестирует кейс, когда дата не передана или не конвертируется в datetime"""
+    with pytest.raises(ValueError) as exc_info:
+        get_events(pd.DataFrame([{'test': 'test'}, {'test': 'test'}]), date_)
+
+    assert str(exc_info.value) == raise_message
