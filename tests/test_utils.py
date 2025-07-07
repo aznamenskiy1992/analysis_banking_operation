@@ -279,3 +279,10 @@ def test_incorrect_input_currencies_for_get_currency_rates(input_currencies, rai
     with pytest.raises(ValueError) as exc_info:
         get_currency_rates(input_currencies)
     assert str(exc_info.value) == raise_message
+
+
+def test_currencies_is_not_list_for_get_currency_rates():
+    """Тестирует кейс, когда валюты переданы не в списке"""
+    with pytest.raises(TypeError) as exc_info:
+        get_currency_rates({'USD',})
+    assert str(exc_info.value) == 'Валюты переданы не в списке'
