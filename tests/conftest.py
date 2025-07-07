@@ -377,8 +377,8 @@ def get_currency_response_for_get_currency_rates():
             'source': 'EUR',
             'quotes': {
                 'EURRUB': {
-                    'start_rate': 93.01,
-                    'end_rate': 93.01,
+                    'start_rate': 90.000,
+                    'end_rate': 90.000,
                     'change': 0,
                     'change_pct': 0
                 }

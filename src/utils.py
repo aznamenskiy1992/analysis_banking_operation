@@ -117,6 +117,41 @@ def get_income(operation: pd.DataFrame) -> dict:
     }
 
 
-def get_currency_rates(currency: list) -> dict:
+def get_currency_rates(currencies: list) -> dict:
     """Функция возвращает курс валют из user_settings.json"""
-    pass
+    currency_rates: list = []
+
+    current_day = datetime.datetime.now()
+    current_day_string = current_day.strftime("%Y-%m-%d")
+
+    for currency in currencies:
+        url = f"https://api.apilayer.com/currency_data/change?start_date={current_day_string}&end_date={current_day_string}&currencies=RUB&source={currency}"
+
+        payload = {}
+        headers = {
+            "apikey": currency_data_api_key
+        }
+
+        try:
+            response = requests.get(url, headers=headers, data=payload)
+            response.raise_for_status()
+            content = response.json()
+
+        except requests.HTTPError as e:
+            raise requests.HTTPError(f"""Ошибка HTTP: {e}
+Причина: {response.reason}""")
+
+        except requests.exceptions.RequestException as e:
+            raise requests.exceptions.RequestException(f'Ошибка: {e}')
+
+        else:
+            currency_rates.append(
+                {
+                    "currency": currency,
+                    "rate": content.get('quotes', {}).get(f'{currency}RUB', {}).get('end_rate', 0.00)
+                }
+            )
+
+    return {
+        "currency_rates": currency_rates
+    }

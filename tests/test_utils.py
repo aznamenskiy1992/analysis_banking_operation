@@ -260,8 +260,10 @@ def test_get_currency_rate_for_get_currency_rates(mock_get, get_currency_respons
             },
             {
                 "currency": "EUR",
-                "rate": 93.01
+                "rate": 90.000
             }
         ]
     }
+
+    assert  mock_get.call_count == 2
 
