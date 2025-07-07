@@ -163,3 +163,7 @@ def get_currency_rates(currencies: list) -> dict:
     return {
         "currency_rates": currency_rates
     }
+
+
+def get_stock_prices(stocks: list) -> dict:
+    pass

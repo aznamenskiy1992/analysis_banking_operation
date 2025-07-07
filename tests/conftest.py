@@ -385,3 +385,54 @@ def get_currency_response_for_get_currency_rates():
             }
         },
     ]
+
+
+@pytest.fixture
+def get_data_for_get_stock_prices():
+    """Фикстура возвращает ответ от marketstack-api"""
+    return {
+        'pagination': {
+            'limit': 100,
+            'offset': 0,
+            'count': 2,
+            'total': 2
+        },
+        'data': [
+            {
+                'open': 212.145,
+                'high': 214.65,
+                'low': 211.8101,
+                'close': 213.55,
+                'volume': 34955836.0,
+                'adj_high': 214.65,
+                'adj_low': 211.8101,
+                'adj_close': 213.55,
+                'adj_open': 212.145,
+                'adj_volume': 34955836.0,
+                'split_factor': 1.0,
+                'dividend': 0.0,
+                'symbol': 'AAPL',
+                'exchange':
+                    'XNAS',
+                'date': '2025-07-03T00:00:00+0000'
+            },
+            {
+                'open': 212.145,
+                'high': 214.65,
+                'low': 211.8101,
+                'close': 320.55,
+                'volume': 34955836.0,
+                'adj_high': 214.65,
+                'adj_low': 211.8101,
+                'adj_close': 213.55,
+                'adj_open': 212.145,
+                'adj_volume': 34955836.0,
+                'split_factor': 1.0,
+                'dividend': 0.0,
+                'symbol': 'AMZN',
+                'exchange':
+                    'XNAS',
+                'date': '2025-07-03T00:00:00+0000'
+            },
+        ]
+    }

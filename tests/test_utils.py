@@ -4,7 +4,7 @@ from unittest.mock import patch, MagicMock
 
 import requests
 
-from src.utils import get_expenses, get_income, get_currency_rates
+from src.utils import get_expenses, get_income, get_currency_rates, get_stock_prices
 
 
 def test_get_expenses_for_get_expenses(get_data_for_get_expenses):
@@ -316,3 +316,29 @@ def test_other_error_for_get_currency_rates(mock_get):
     assert 'Ошибка:' in str(exc_info.value)
 
     assert mock_get.call_count == 1
+
+
+@patch('requests.get')
+def test_get_stock_prices_for_get_stock_prices(mock_get, get_data_for_get_stock_prices):
+    """Тестирует возврат стоимости акций"""
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.json = get_data_for_get_stock_prices
+    mock_get.return_value = mock_response
+
+    result = get_stock_prices(['AAPL', 'AMZN'])
+
+    assert result == {
+        "currency_rates": [
+            {
+                "stock": "AAPL",
+                "price": 213.55
+            },
+            {
+                "stock": "AMZN",
+                "price": 320.55
+            },
+        ]
+    }
+
+    mock_get.assert_called_once()
