@@ -270,10 +270,8 @@ def test_get_currency_rate_for_get_currency_rates(mock_get, get_currency_respons
 @pytest.mark.parametrize(
     'input_currencies, raise_message',
     [
-        (
-            [], 'Список валют пустой',
-            None, 'Валюты не переданы',
-        )
+        ([], 'Список валют пустой'),
+        (None, 'Валюты не переданы',)
     ]
 )
 def test_incorrect_input_currencies_for_get_currency_rates(input_currencies, raise_message):

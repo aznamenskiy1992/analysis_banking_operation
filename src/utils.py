@@ -119,6 +119,12 @@ def get_income(operation: pd.DataFrame) -> dict:
 
 def get_currency_rates(currencies: list) -> dict:
     """Функция возвращает курс валют из user_settings.json"""
+    if currencies is None:
+        raise ValueError('Валюты не переданы')
+    elif isinstance(currencies, list):
+        if len(currencies) == 0:
+            raise ValueError('Список валют пустой')
+
     currency_rates: list = []
 
     current_day = datetime.datetime.now()
