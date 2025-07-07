@@ -77,7 +77,7 @@ def test_get_result_inner_function_for_get_events(mock_get_expenses, mock_get_in
     'date_, raise_message',
     [
         (None, 'Дата не передана'),
-        (['2025-07-07', 'Дата должна быть передана, как строка'])
+        ('2025 07 07', 'Дата указана неверно. Маска: YYYY-MM-DD')
     ]
 )
 def test_incorrect_date_for_get_events(date_, raise_message):

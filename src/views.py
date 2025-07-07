@@ -1,3 +1,4 @@
+import datetime
 from typing import Optional
 import json
 
@@ -8,6 +9,14 @@ from src.utils import get_expenses, get_income, get_currency_rates, get_stock_pr
 
 def get_events(operation: pd.DataFrame, date_: str, period: Optional[str] = 'M') -> str:
     """Функция возвращает события"""
+    if date_ is None:
+        raise ValueError('Дата не передана')
+
+    try:
+        date_obj = datetime.datetime.strptime(date_, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
+    except ValueError:
+        raise ValueError('Дата указана неверно. Маска: YYYY-MM-DD')
+
     with open('user_settings.json') as f:
         currencies_and_stocks: dict = json.load(f)
 
