@@ -1,3 +1,5 @@
+from textwrap import indent
+
 import pytest
 import json
 
@@ -7,10 +9,10 @@ import pandas as pd
 from src.views import get_events
 
 
-@patch('src.utils.get_stock_prices')
-@patch('src.utils.get_currency_rates')
-@patch('src.utils.get_income')
-@patch('src.utils.get_expenses')
+@patch('src.views.get_stock_prices')
+@patch('src.views.get_currency_rates')
+@patch('src.views.get_income')
+@patch('src.views.get_expenses')
 def test_get_result_inner_function_for_get_events(mock_get_expenses, mock_get_income, mock_get_currency_rates, mock_get_stock_prices, result_inner_functions_for_get_events):
     """Тестирует возврат результатов от внутренних функций"""
     mock_get_expenses.return_value = result_inner_functions_for_get_events['get_expenses']
@@ -32,8 +34,8 @@ def test_get_result_inner_function_for_get_events(mock_get_expenses, mock_get_in
                 {
                     "category": "Переводы",
                     "amount": 3250
-                },
-            ],
+                }
+            ]
         },
         "income": {
             "total_amount": 9200,
@@ -45,7 +47,7 @@ def test_get_result_inner_function_for_get_events(mock_get_expenses, mock_get_in
                 {
                     "category": "Пополнение через Сбер",
                     "amount": 1200
-                },
+                }
             ]
         },
         "currency_rates": [
@@ -66,6 +68,6 @@ def test_get_result_inner_function_for_get_events(mock_get_expenses, mock_get_in
             {
                 "stock": "AMZN",
                 "price": 320.55
-            },
+            }
         ]
     }
