@@ -436,3 +436,14 @@ def get_data_for_get_stock_prices():
             },
         ]
     }
+
+
+@pytest.fixture
+def result_inner_functions_for_get_events():
+    """Фикстура возвращает результат внутренних функций"""
+    return {
+        "get_expenses": '{"expenses": {"total_amount": 11250,"main": [],"transfers_and_cash": [{"category": "Наличные","amount": 8000},{"category": "Переводы","amount": 3250},],}}',
+        "get_income": '{"income": {"total_amount": 9200,"main": [{"category": "Пополнение через Газпромбанк","amount": 8000},{"category": "Пополнение через Сбер","amount": 1200},]}}',
+        "get_currency_rates": '{"currency_rates": [{"currency": "USD","rate": 78.918179},{"currency": "EUR","rate": 90.000}]}',
+        "get_stock_prices": '{"stock_prices": [{"stock": "AAPL","price": 213.55},{"stock": "AMZN","price": 320.55},]}',
+    }
