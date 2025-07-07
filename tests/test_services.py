@@ -79,8 +79,15 @@ def test_none_search_str_for_filter_transaction_by_search_str(get_data_for_servi
     assert str(exc_info.value) == "Строка для поиска не передана"
 
 
-def test_search_is_not_str_for_filter_transaction_by_search_str(get_data_for_services):
+@pytest.mark.parametrize(
+    'search_str, raise_message',
+    [
+        (["МА"], "Строка передана не в типе str"),
+        ({"МА",}, "Строка передана не в типе str")
+    ]
+)
+def test_search_is_not_str_for_filter_transaction_by_search_str(search_str, raise_message, get_data_for_services):
     """Тестирует кейс, когда cтрока передана не в типе str"""
     with pytest.raises(TypeError) as exc_info:
-        filter_transaction_by_search_str(get_data_for_services, ["МА"])
-    assert str(exc_info.value) == "Строка передана не в типе str"
+        filter_transaction_by_search_str(get_data_for_services, search_str)
+    assert str(exc_info.value) == raise_message
