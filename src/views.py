@@ -17,6 +17,23 @@ def get_events(operation: pd.DataFrame, date_: str, period: Optional[str] = 'M')
     except ValueError:
         raise ValueError('Дата указана неверно. Маска: YYYY-MM-DD')
 
+    if not pd.api.types.is_datetime64_dtype(operation['Дата операции']):
+        operation['Дата операции'] = pd.to_datetime(operation['Дата операции'], dayfirst=True)
+
+    if period != 'ALL':
+        if period == 'W':
+            start_date = (date_obj - datetime.timedelta(days=date_obj.weekday())).replace(hour=00, minute=00, second=00)
+        elif period == 'M':
+            start_date = date_obj.replace(day=1, hour=00, minute=00, second=00)
+        elif period == 'Y':
+            start_date = date_obj.replace(month=1, day=1, hour=00, minute=00, second=00)
+        operation = operation.loc[
+            (operation['Дата операции'] >= start_date) &
+            (operation['Дата операции'] <= date_obj)
+        ]
+    else:
+        operation = operation.loc[operation['Дата операции'] <= date_obj]
+
     with open('user_settings.json') as f:
         currencies_and_stocks: dict = json.load(f)
 

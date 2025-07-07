@@ -20,7 +20,7 @@ def test_get_result_inner_function_for_get_events(mock_get_expenses, mock_get_in
     mock_get_currency_rates.return_value = result_inner_functions_for_get_events['get_currency_rates']
     mock_get_stock_prices.return_value = result_inner_functions_for_get_events['get_stock_prices']
 
-    result = get_events(pd.DataFrame([{'test': 'test'}, {'test': 'test'}]), '2025-07-05')
+    result = get_events(pd.DataFrame([{'test': 'test', 'Дата операции': '2025-05-07'}, {'test': 'test', 'Дата операции': '2025-05-07'}]), '2025-07-05')
 
     assert json.loads(result) == {
         "expenses": {
