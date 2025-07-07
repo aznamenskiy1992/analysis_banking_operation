@@ -124,6 +124,8 @@ def get_currency_rates(currencies: list) -> dict:
     elif isinstance(currencies, list):
         if len(currencies) == 0:
             raise ValueError('Список валют пустой')
+    elif not isinstance(currencies, list):
+        raise TypeError('Валюты переданы не в списке')
 
     currency_rates: list = []
 
