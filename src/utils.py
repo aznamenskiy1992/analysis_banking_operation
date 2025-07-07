@@ -104,3 +104,8 @@ def get_income(operation: pd.DataFrame) -> dict:
             "main": income_by_categories,
         }
     }
+
+
+def get_currency_rates(currency: list) -> dict:
+    """Функция возвращает курс валют из user_settings.json"""
+    pass
