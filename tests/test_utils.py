@@ -2,7 +2,8 @@ import pytest
 
 from unittest.mock import patch, MagicMock
 
-from example_api_requests_and_response import result
+import requests
+
 from src.utils import get_expenses, get_income, get_currency_rates
 
 
@@ -286,3 +287,18 @@ def test_currencies_is_not_list_for_get_currency_rates():
     with pytest.raises(TypeError) as exc_info:
         get_currency_rates({'USD',})
     assert str(exc_info.value) == 'Валюты переданы не в списке'
+
+
+@patch('requests.get')
+def test_http_error_for_get_currency_rates(mock_get):
+    """Тестирует HTTP ошибки при get запросе"""
+    mock_response = MagicMock()
+    mock_response.status_code = 404
+    mock_response.raise_for_status.side_effect = requests.HTTPError("404 Client Error")
+    mock_get.return_value = mock_response
+
+    with pytest.raises(requests.HTTPError) as exc_info:
+        get_currency_rates(['Доллар'])
+    assert 'Ошибка HTTP:' in str(exc_info.value)
+
+    assert mock_get.call_count == 1
