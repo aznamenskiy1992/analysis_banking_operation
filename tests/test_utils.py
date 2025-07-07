@@ -323,13 +323,13 @@ def test_get_stock_prices_for_get_stock_prices(mock_get, get_data_for_get_stock_
     """Тестирует возврат стоимости акций"""
     mock_response = MagicMock()
     mock_response.status_code = 200
-    mock_response.json = get_data_for_get_stock_prices
+    mock_response.json.return_value = get_data_for_get_stock_prices
     mock_get.return_value = mock_response
 
     result = get_stock_prices(['AAPL', 'AMZN'])
 
     assert result == {
-        "currency_rates": [
+        "stock_prices": [
             {
                 "stock": "AAPL",
                 "price": 213.55

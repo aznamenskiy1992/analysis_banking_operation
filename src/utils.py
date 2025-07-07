@@ -166,4 +166,42 @@ def get_currency_rates(currencies: list) -> dict:
 
 
 def get_stock_prices(stocks: list) -> dict:
-    pass
+    """Функция возвращает стоимость акций из user_settings.json"""
+    if stocks is None:
+        raise ValueError('Акции не переданы')
+    elif isinstance(stocks, list):
+        if len(stocks) == 0:
+            raise ValueError('Список акций пустой')
+    elif not isinstance(stocks, list):
+        raise TypeError('Акции переданы не в списке')
+
+    stock_prices: list = []
+
+    day_ = datetime.datetime.now() - datetime.timedelta(days=4)
+    day_string = day_.strftime("%Y-%m-%d")
+
+    url = f"https://api.marketstack.com/v1/eod?access_key={marketstack_api_key}"
+
+    querystring = {"symbols": ",".join(stocks), "date_from": day_string, "date_to": day_string}
+
+    try:
+       response = requests.get(url, params=querystring)
+       response.raise_for_status()
+       content = response.json()
+
+    except requests.HTTPError as e:
+        raise requests.HTTPError(f"""Ошибка HTTP: {e}
+        Причина: {response.reason}""")
+
+    except requests.exceptions.RequestException as e:
+        raise requests.exceptions.RequestException(f'Ошибка: {e}')
+
+    else:
+        if 'data' not in content:
+            raise ValueError('В ответе нет ключа data. Проверьте ответ от API')
+
+        stock_prices.extend([{"stock": content['data'][i]['symbol'], "price": content['data'][i]['close']} for i in range(len(content['data'])) if 'symbol' in content['data'][i] and 'close' in content['data'][i]])
+
+    return {
+        "stock_prices": stock_prices
+    }
