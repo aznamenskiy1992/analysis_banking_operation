@@ -1,4 +1,13 @@
+import os
+
 import pandas as pd
+
+from dotenv import load_dotenv
+
+
+load_dotenv()
+currency_data_api_key = os.getenv('CURRENCY_DATA_API_KEY')
+marketstack_api_key = os.getenv('MARKETSTACK_API_KEY')
 
 
 def get_expenses(operation: pd.DataFrame) -> dict:
@@ -109,3 +118,6 @@ def get_income(operation: pd.DataFrame) -> dict:
 def get_currency_rates(currency: list) -> dict:
     """Функция возвращает курс валют из user_settings.json"""
     pass
+
+
+
