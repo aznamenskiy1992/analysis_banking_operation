@@ -378,3 +378,17 @@ def test_http_error_for_get_stock_prices(mock_get):
     assert 'Ошибка HTTP:' in str(exc_info.value)
 
     assert mock_get.call_count == 1
+
+
+@patch('requests.get')
+def test_other_error_for_get_stock_prices(mock_get):
+    """Тестирует остальные ошибки при get запросе"""
+    mock_response = MagicMock()
+    mock_response.raise_for_status.side_effect = requests.exceptions.RequestException("Текст ошибки")
+    mock_get.return_value = mock_response
+
+    with pytest.raises(requests.exceptions.RequestException) as exc_info:
+        get_stock_prices(['AMZN'])
+    assert 'Ошибка:' in str(exc_info.value)
+
+    assert mock_get.call_count == 1
