@@ -1,5 +1,6 @@
 import json
 from unittest.mock import patch
+import logging
 
 import pytest
 
@@ -72,11 +73,17 @@ def test_transactions_not_found_for_filter_transaction_by_search_str(get_data_fo
     assert json.loads(result) == []
 
 
-def test_none_search_str_for_filter_transaction_by_search_str(get_data_for_services):
+def test_none_search_str_for_filter_transaction_by_search_str(get_data_for_services, caplog):
     """Тестирует кейс, когда не передана строка поиска"""
+    caplog.set_level(logging.DEBUG)
+
     with pytest.raises(ValueError) as exc_info:
         filter_transaction_by_search_str(get_data_for_services, None)
     assert str(exc_info.value) == "Строка для поиска не передана"
+
+    assert "Ошибка: Не передана строка для поиска" in caplog.text
+    assert len(caplog.records) == 1
+    assert caplog.records[0].levelname == 'CRITICAL'
 
 
 @pytest.mark.parametrize(
@@ -86,8 +93,14 @@ def test_none_search_str_for_filter_transaction_by_search_str(get_data_for_servi
         ({"МА",}, "Строка передана не в типе str")
     ]
 )
-def test_search_is_not_str_for_filter_transaction_by_search_str(search_str, raise_message, get_data_for_services):
+def test_search_is_not_str_for_filter_transaction_by_search_str(search_str, raise_message, get_data_for_services, caplog):
     """Тестирует кейс, когда cтрока передана не в типе str"""
+    caplog.set_level(logging.DEBUG)
+
     with pytest.raises(TypeError) as exc_info:
         filter_transaction_by_search_str(get_data_for_services, search_str)
     assert str(exc_info.value) == raise_message
+
+    assert "Ошибка: Строка для поиска передана в типе" in caplog.text
+    assert len(caplog.records) == 1
+    assert caplog.records[0].levelname == 'CRITICAL'
