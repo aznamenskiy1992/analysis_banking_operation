@@ -35,8 +35,8 @@ def test_get_main_data_for_main(
     main()
 
     events_result = '{"expenses": {"total_amount": 0,"main": [],"transfers_and_cash": []}}\n'
-    filter_result = '[]\n'
-    expenses_result = '[]\n'
+    filter_result = "[]\n"
+    expenses_result = "[]\n"
 
     captured = capsys.readouterr()
     assert captured.out == events_result + filter_result + expenses_result

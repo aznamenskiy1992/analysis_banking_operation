@@ -435,6 +435,6 @@ def result_all_functions_for_main():
     return {
         "get_data": [{"test": "test"}, {"test": "test"}],
         "get_events": '{"expenses": {"total_amount": 0,"main": [],"transfers_and_cash": []}}',
-        "filter_transaction_by_search_str": '[]',
-        "get_expenses_for_3_months_by_category": '[]',
+        "filter_transaction_by_search_str": "[]",
+        "get_expenses_for_3_months_by_category": "[]",
     }
