@@ -1,8 +1,17 @@
 import json
+import logging
 
 import pandas as pd
 
 from src.data import get_data
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+stream_handler = logging.StreamHandler()
+stream_formatter = logging.Formatter('%(asctime)s %(filename)s %(funcName)s %(levelname)s: %(message)s')
+stream_handler.setFormatter(stream_formatter)
+logger.addHandler(stream_handler)
 
 
 def filter_transaction_by_search_str(operation: list[dict], search_str: str) -> str:
@@ -25,13 +34,17 @@ def filter_transaction_by_search_str(operation: list[dict], search_str: str) -> 
     """
     # Проверка входных параметров
     if operation is None:
+        logger.critical('Ошибка: Не переданы транзакции')
         raise ValueError("Транзакции не переданы")
     elif not isinstance(operation, list):
+        logger.critical(f'Ошибка: Транзакции переданы в типе {type(operation)}')
         raise TypeError("Транзакции должны быть переданы в списке")
 
     if search_str is None:
+        logger.critical('Ошибка: Не передана строка для поиска')
         raise ValueError("Строка для поиска не передана")
     elif not isinstance(search_str, str):
+        logger.critical(f'Ошибка: Строка для поиска передана в типе {type(search_str)}')
         raise TypeError("Строка передана не в типе str")
 
     # Приведение строки поиска к нижнему регистру для регистронезависимого поиска

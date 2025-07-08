@@ -1,11 +1,20 @@
 import os
 import json
+import logging
 
 import pandas as pd
 import requests
 import datetime
 
 from dotenv import load_dotenv
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+stream_handler = logging.StreamHandler()
+stream_formatter = logging.Formatter('%(asctime)s %(filename)s %(funcName)s %(levelname)s: %(message)s')
+stream_handler.setFormatter(stream_formatter)
+logger.addHandler(stream_handler)
 
 
 load_dotenv()
@@ -42,6 +51,7 @@ def get_expenses(operation: pd.DataFrame) -> str:
 
     # Считаем расходы по категориям
     if len(expenses) == 0:
+        logger.info('Расходы по категориям не найдены')
         expenses_by_categories: list = []
     else:
         grouped_expenses: pd.DataFrame = (
@@ -64,6 +74,7 @@ def get_expenses(operation: pd.DataFrame) -> str:
 
     # Считаем сумму по переводам и наличным
     if len(cash_and_transfers) == 0:
+        logger.info('Переводы и наличные не найдены')
         result_cash_and_transfers: list = []
     else:
         grouped_cash_and_transfers: pd.DataFrame = (
@@ -101,6 +112,7 @@ def get_income(operation: pd.DataFrame) -> str:
 
     # Считаем поступления по категориям
     if len(income) == 0:
+        logger.info('Поступления по категориям не найдены')
         income_by_categories: list = []
     else:
         grouped_income: pd.DataFrame = (
@@ -125,11 +137,14 @@ def get_income(operation: pd.DataFrame) -> str:
 def get_currency_rates(currencies: list) -> str:
     """Функция возвращает курс валют из user_settings.json"""
     if currencies is None:
+        logger.critical('Ошибка: Валюта не передана')
         raise ValueError('Валюты не переданы')
     elif isinstance(currencies, list):
         if len(currencies) == 0:
+            logger.critical('Ошибка: Передан пустой список валют')
             raise ValueError('Список валют пустой')
     elif not isinstance(currencies, list):
+        logger.critical(f'Ошибка: Валюты переданы в типе {type(currencies)}')
         raise TypeError('Валюты переданы не в списке')
 
     currency_rates: list = []
@@ -151,10 +166,12 @@ def get_currency_rates(currencies: list) -> str:
             content = response.json()
 
         except requests.HTTPError as e:
+            logger.critical('Ошибка: HTTPError')
             raise requests.HTTPError(f"""Ошибка HTTP: {e}
 Причина: {response.reason}""")
 
         except requests.exceptions.RequestException as e:
+            logger.critical('Ошибка: Другие ошибки при get запросе')
             raise requests.exceptions.RequestException(f'Ошибка: {e}')
 
         else:
@@ -175,11 +192,14 @@ def get_currency_rates(currencies: list) -> str:
 def get_stock_prices(stocks: list) -> str:
     """Функция возвращает стоимость акций из user_settings.json"""
     if stocks is None:
+        logger.critical('Ошибка: Акции не переданы')
         raise ValueError('Акции не переданы')
     elif isinstance(stocks, list):
         if len(stocks) == 0:
+            logger.critical('Ошибка: Передан пустой список акций')
             raise ValueError('Список акций пустой')
     elif not isinstance(stocks, list):
+        logger.critical(f'Ошибка: Акции переданы в типе {type(stocks)}')
         raise TypeError('Акции переданы не в списке')
 
     stock_prices: list = []
@@ -197,14 +217,17 @@ def get_stock_prices(stocks: list) -> str:
        content = response.json()
 
     except requests.HTTPError as e:
+        logger.critical(f'Ошибка: HTTPError')
         raise requests.HTTPError(f"""Ошибка HTTP: {e}
         Причина: {response.reason}""")
 
     except requests.exceptions.RequestException as e:
+        logger.critical(f'Ошибка: Другие ошибки при get запросе')
         raise requests.exceptions.RequestException(f'Ошибка: {e}')
 
     else:
         if 'data' not in content:
+            logger.critical('Ошибка: В ответе нет ключа "data"')
             raise ValueError('В ответе нет ключа data. Проверьте ответ от API')
 
         stock_prices.extend([{"stock": content['data'][i]['symbol'], "price": content['data'][i]['close']} for i in range(len(content['data'])) if 'symbol' in content['data'][i] and 'close' in content['data'][i]])
