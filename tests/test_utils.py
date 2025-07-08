@@ -1,4 +1,5 @@
 import json
+import logging
 
 import pytest
 
@@ -66,8 +67,10 @@ def test_get_expenses_for_get_expenses(get_data_for_get_expenses):
     }
 
 
-def test_not_have_expenses_for_get_expenses(get_data_for_get_expenses):
+def test_not_have_expenses_for_get_expenses(get_data_for_get_expenses, caplog):
     """Тестирует кейс, когда нет расходов"""
+    caplog.set_level(logging.DEBUG)
+
     result = get_expenses(
         get_data_for_get_expenses[-4:]
     )
@@ -88,6 +91,10 @@ def test_not_have_expenses_for_get_expenses(get_data_for_get_expenses):
             ]
         }
     }
+
+    assert "Расходы по категориям не найдены" in caplog.text
+    assert len(caplog.records) == 1
+    assert caplog.records[0].levelname == 'INFO'
 
 
 def test_less_7_categories_for_get_expenses(get_data_for_get_expenses):
@@ -232,8 +239,10 @@ def test_get_income_for_get_income(get_data_for_get_income):
     }
 
 
-def test_not_have_income_for_get_income(get_data_for_get_expenses):
+def test_not_have_income_for_get_income(get_data_for_get_expenses, caplog):
     """Тестирует кейс, когда нет поступлений"""
+    caplog.set_level(logging.DEBUG)
+
     result = get_income(get_data_for_get_expenses)
 
     assert json.loads(result) == {
@@ -242,6 +251,10 @@ def test_not_have_income_for_get_income(get_data_for_get_expenses):
             "main": []
         }
     }
+
+    assert "Поступления по категориям не найдены" in caplog.text
+    assert len(caplog.records) == 1
+    assert caplog.records[0].levelname == 'INFO'
 
 
 @patch('requests.get')
@@ -284,11 +297,17 @@ def test_incorrect_input_currencies_for_get_currency_rates(input_currencies, rai
     assert str(exc_info.value) == raise_message
 
 
-def test_currencies_is_not_list_for_get_currency_rates():
+def test_currencies_is_not_list_for_get_currency_rates(caplog):
     """Тестирует кейс, когда валюты переданы не в списке"""
+    caplog.set_level(logging.DEBUG)
+
     with pytest.raises(TypeError) as exc_info:
         get_currency_rates({'USD',})
     assert str(exc_info.value) == 'Валюты переданы не в списке'
+
+    assert "Ошибка: Валюты переданы в типе" in caplog.text
+    assert len(caplog.records) == 1
+    assert caplog.records[0].levelname == 'CRITICAL'
 
 
 @patch('requests.get')
@@ -360,11 +379,17 @@ def test_incorrect_input_stocks_for_get_stock_prices(input_stocks, raise_message
     assert str(exc_info.value) == raise_message
 
 
-def test_stocks_is_not_list_for_get_stock_prices():
+def test_stocks_is_not_list_for_get_stock_prices(caplog):
     """Тестирует кейс, когда акции переданы не в списке"""
+    caplog.set_level(logging.DEBUG)
+
     with pytest.raises(TypeError) as exc_info:
         get_stock_prices({'AMZN',})
     assert str(exc_info.value) == 'Акции переданы не в списке'
+
+    assert "Ошибка: Акции переданы в типе" in caplog.text
+    assert len(caplog.records) == 1
+    assert caplog.records[0].levelname == 'CRITICAL'
 
 
 @patch('requests.get')
