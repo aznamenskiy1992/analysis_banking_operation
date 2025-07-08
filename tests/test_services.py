@@ -1,5 +1,4 @@
 import json
-from unittest.mock import patch
 import logging
 
 import pytest
@@ -83,17 +82,24 @@ def test_none_search_str_for_filter_transaction_by_search_str(get_data_for_servi
 
     assert "Ошибка: Не передана строка для поиска" in caplog.text
     assert len(caplog.records) == 1
-    assert caplog.records[0].levelname == 'CRITICAL'
+    assert caplog.records[0].levelname == "CRITICAL"
 
 
 @pytest.mark.parametrize(
-    'search_str, raise_message',
+    "search_str, raise_message",
     [
         (["МА"], "Строка передана не в типе str"),
-        ({"МА",}, "Строка передана не в типе str")
-    ]
+        (
+            {
+                "МА",
+            },
+            "Строка передана не в типе str",
+        ),
+    ],
 )
-def test_search_is_not_str_for_filter_transaction_by_search_str(search_str, raise_message, get_data_for_services, caplog):
+def test_search_is_not_str_for_filter_transaction_by_search_str(
+    search_str, raise_message, get_data_for_services, caplog
+):
     """Тестирует кейс, когда cтрока передана не в типе str"""
     caplog.set_level(logging.DEBUG)
 
@@ -103,4 +109,4 @@ def test_search_is_not_str_for_filter_transaction_by_search_str(search_str, rais
 
     assert "Ошибка: Строка для поиска передана в типе" in caplog.text
     assert len(caplog.records) == 1
-    assert caplog.records[0].levelname == 'CRITICAL'
+    assert caplog.records[0].levelname == "CRITICAL"
