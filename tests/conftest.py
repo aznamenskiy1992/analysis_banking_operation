@@ -453,6 +453,7 @@ def result_inner_functions_for_get_events():
 def result_all_functions_for_main():
     """Фикстура возвращает результат от всех функций"""
     return {
+        "get_data": [{'test': 'test'}, {'test': 'test'}],
         "get_events": '{"expenses": {"total_amount": 11250,"main": [],"transfers_and_cash": [{"category": "Наличные","amount": 8000},{"category": "Переводы","amount": 3250}]},"income": {"total_amount": 9200,"main": [{"category": "Пополнение через Газпромбанк","amount": 8000},{"category": "Пополнение через Сбер","amount": 1200}]},"currency_rates": [{"currency": "USD","rate": 78.918179},{"currency": "EUR","rate": 90.000}],"stock_prices": [{"stock": "AAPL","price": 213.55},{"stock": "AMZN","price": 320.55}]}',
         "filter_transaction_by_search_str": '[{"Дата операции": "31.12.2021 16:44:00","Дата платежа": "31.12.2021","Номер карты": "*7197","Статус": "OK","Сумма операции": "-160,89","Валюта операции": "RUB","Сумма платежа": "-160,89","Валюта платежа": "RUB","Кэшбэк": 0,"Категория": "Супермаркеты","MCC": 5411,"Описание": "Колхоз","Бонусы (включая кэшбэк)": 3.00,"Округление на инвесткопилку": 0.0,"Сумма операции с округлением": 160.89}]',
         "get_expenses_for_3_months_by_category": '[{"Категория": "Супермаркеты", "Сумма операции с округлением": 321.78}]'
