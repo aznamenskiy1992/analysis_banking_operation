@@ -70,6 +70,8 @@ def get_events(operation: pd.DataFrame, date_: str, period: Optional[str] = "M")
         elif period == "Y":
             # Для года - первое число года
             start_date = date_obj.replace(month=1, day=1, hour=00, minute=00, second=00)
+        else:
+            raise ValueError('Период указан неверно')
 
         # Фильтрация операций по временному диапазону
         operation = operation.loc[
