@@ -97,4 +97,4 @@ def get_events(operation: pd.DataFrame, date_: str, period: Optional[str] = "M")
     merged_events_data: dict = {**expenses, **income, **currency_rates, **stock_rates}
 
     # Возврат объединенных данных в формате JSON
-    return json.dumps(merged_events_data)
+    return json.dumps(merged_events_data, ensure_ascii=False, indent=4)
