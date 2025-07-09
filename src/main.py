@@ -46,3 +46,7 @@ def main() -> None:
     print(get_expenses_for_3_months_by_category(operations, get_expenses_category_arg, get_expenses_date_arg))
 
     return None
+
+
+if __name__ == "__main__":
+    main()
