@@ -80,7 +80,7 @@ def get_events(operation: pd.DataFrame, date_: str, period: Optional[str] = "M")
         operation = operation.loc[operation["Дата операции"] <= date_obj]
 
     # Загрузка пользовательских настроек по валютам и акциям
-    with open("user_settings.json") as f:
+    with open("../user_settings.json") as f:
         currencies_and_stocks: dict = json.load(f)
 
     # Получение списка валют и акций из настроек

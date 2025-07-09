@@ -1,5 +1,5 @@
 import json
-from unittest.mock import patch
+from unittest.mock import mock_open, patch
 
 import pandas as pd
 import pytest
@@ -7,6 +7,7 @@ import pytest
 from src.views import get_events
 
 
+@patch("builtins.open", new_callable=mock_open, read_data='{"user_currencies": ["USD"], "user_stocks": ["AAPL"]}')
 @patch("src.views.get_stock_prices")
 @patch("src.views.get_currency_rates")
 @patch("src.views.get_income")
@@ -16,6 +17,7 @@ def test_get_result_inner_function_for_get_events(
     mock_get_income,
     mock_get_currency_rates,
     mock_get_stock_prices,
+    mock_file_open,
     result_inner_functions_for_get_events,
 ):
     """Тестирует возврат результатов от внутренних функций"""
