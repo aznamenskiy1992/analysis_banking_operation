@@ -105,8 +105,7 @@ def get_expenses(operation: pd.DataFrame) -> str:
                 "main": expenses_by_categories,  # Топ-7 категорий
                 "transfers_and_cash": result_cash_and_transfers,  # Наличные и переводы
             }
-        },
-        indent=4,
+        }, ensure_ascii=False, indent=4
     )
 
 
@@ -169,8 +168,7 @@ def get_income(operation: pd.DataFrame) -> str:
                 "total_amount": total_amount,  # Общая сумма доходов
                 "main": income_by_categories,  # Детализация по категориям
             }
-        },
-        indent=4,
+        }, ensure_ascii=False, indent=4
     )
 
 
@@ -266,7 +264,7 @@ def get_currency_rates(currencies: list) -> str:
             )
 
     # Возвращаем результат в виде форматированного JSON
-    return json.dumps({"currency_rates": currency_rates}, indent=4)
+    return json.dumps({"currency_rates": currency_rates}, ensure_ascii=False, indent=4)
 
 
 def get_stock_prices(stocks: list) -> str:
@@ -370,4 +368,4 @@ def get_stock_prices(stocks: list) -> str:
         )
 
     # Возврат результатов в виде форматированного JSON
-    return json.dumps({"stock_prices": stock_prices}, indent=4)
+    return json.dumps({"stock_prices": stock_prices}, ensure_ascii=False, indent=4)

@@ -81,7 +81,7 @@ def get_expenses_for_3_months_by_category(operation: pd.DataFrame, category: str
     # Если найдены подходящие транзакции - группируем по категории и суммируем суммы
     if len(filtered_operation) != 0:
         grouped_operation = filtered_operation.groupby("Категория")["Сумма операции с округлением"].sum().reset_index()
-        return json.dumps(grouped_operation.to_dict(orient="records"))
+        return json.dumps(grouped_operation.to_dict(orient="records"), ensure_ascii=False, indent=4)
     else:
         # Если транзакций не найдено - возвращаем пустой список в JSON
-        return json.dumps([])
+        return json.dumps([], ensure_ascii=False, indent=4)

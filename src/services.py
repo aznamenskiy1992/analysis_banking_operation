@@ -1,6 +1,8 @@
 import json
 import logging
 
+from pandas import Timestamp
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 stream_handler = logging.StreamHandler()
@@ -45,16 +47,20 @@ def filter_transaction_by_search_str(operation: list[dict], search_str: str) -> 
     # Приведение строки поиска к нижнему регистру для регистронезависимого поиска
     search_str_lower = search_str.lower()
 
-    # Добавляем в новый список словари содержащие ключи Категория и Описание
-    cleared_operation: list[dict] = [item for item in operation if 'Категория' in item.keys() and 'Описание' in item.keys()]
+    checked_columns = {
+        'Ключи с датой': ['Дата операции', 'Дата платежа'],
+        'Ключи для поиска': ['Категория', 'Описание']
+    }
+    for i in range(len(operation)):
+        # Меняем тип колонок дат с Timestamp на str
+        for column in checked_columns['Ключи с датой']:
+            if isinstance(operation[i][column], Timestamp):
+                operation[i][column] = str(operation[i][column])
 
-    # Заменяем пустые значения в ключах Категория и Описание
-    for i in range(len(cleared_operation)):
-        if cleared_operation[i]['Категория'] is None:
-            cleared_operation[i]['Категория'] = 'Не указана'
-
-        if cleared_operation[i]['Описание'] is None:
-            cleared_operation[i]['Описание'] = 'Нет описания'
+        # Заменяем пустые значения в ключах Категория и Описание
+        for column in checked_columns['Ключи для поиска']:
+            if not isinstance(operation[i][column], str):
+                operation[i][column] = 'Не указано'
 
     # Фильтрация и возврат результата в формате JSON:
     # 1. Итерируемся по всем транзакциям
@@ -63,7 +69,7 @@ def filter_transaction_by_search_str(operation: list[dict], search_str: str) -> 
     return json.dumps(
         [
             item
-            for item in cleared_operation
+            for item in operation
             if search_str_lower in item["Категория"].lower() or search_str_lower in item["Описание"].lower()
-        ]
+        ], ensure_ascii=False, indent=4
     )
