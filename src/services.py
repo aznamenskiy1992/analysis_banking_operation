@@ -45,6 +45,17 @@ def filter_transaction_by_search_str(operation: list[dict], search_str: str) -> 
     # Приведение строки поиска к нижнему регистру для регистронезависимого поиска
     search_str_lower = search_str.lower()
 
+    # Добавляем в новый список словари содержащие ключи Категория и Описание
+    cleared_operation: list[dict] = [item for item in operation if 'Категория' in item.keys() and 'Описание' in item.keys()]
+
+    # Заменяем пустые значения в ключах Категория и Описание
+    for i in range(len(cleared_operation)):
+        if cleared_operation[i]['Категория'] is None:
+            cleared_operation[i]['Категория'] = 'Не указана'
+
+        if cleared_operation[i]['Описание'] is None:
+            cleared_operation[i]['Описание'] = 'Нет описания'
+
     # Фильтрация и возврат результата в формате JSON:
     # 1. Итерируемся по всем транзакциям
     # 2. Проверяем наличие search_str в полях 'Категория' или 'Описание' (без учета регистра)
@@ -52,7 +63,7 @@ def filter_transaction_by_search_str(operation: list[dict], search_str: str) -> 
     return json.dumps(
         [
             item
-            for item in operation
+            for item in cleared_operation
             if search_str_lower in item["Категория"].lower() or search_str_lower in item["Описание"].lower()
         ]
     )

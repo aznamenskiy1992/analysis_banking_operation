@@ -33,7 +33,10 @@ def main() -> None:
     # Запрашиваем категорию для фильтрации транзакций
     filter_transaction_search_str_arg = input("Укажите категорию по которой отфильтровать транзакции")
     # Преобразуем DataFrame в список словарей и фильтруем по категории
-    print(filter_transaction_by_search_str(operations.to_dict(orient="records"), filter_transaction_search_str_arg))
+    print(filter_transaction_by_search_str(
+        operations.to_dict(orient="records"),
+        filter_transaction_search_str_arg
+    ))
 
     # Запрашиваем категорию для формирования отчета по расходам
     get_expenses_category_arg = input("Укажите категорию по которой будет сформирован отчёт")
